@@ -25,7 +25,7 @@ To get started with ClassSystem, follow these steps:
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/ClassSystem.git
+   gh repo clone WALKERONFIRE/ClassSystem
 Open the project in your preferred IDE or text editor.
 
 Ensure you have the necessary dependencies installed. You may use NuGet package manager to install any missing packages.
