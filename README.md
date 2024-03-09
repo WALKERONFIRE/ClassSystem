@@ -37,10 +37,8 @@ Access the API endpoints to register students, subjects, manage academic records
 Contributing
 Contributions are welcome! If you'd like to contribute to ClassSystem, please fork the repository and submit a pull request with your changes. Make sure to follow the existing code style and conventions.
 
-License
-This project is licensed under the MIT License.
 
 Contact
-If you have any questions or suggestions regarding ClassSystem, feel free to contact the project maintainer at your.email@example.com.
+If you have any questions or suggestions regarding ClassSystem, feel free to contact the project maintainer at ahmed.hhh35@gmail.com .
 
 Thank you for using ClassSystem! Happy coding! 🚀
