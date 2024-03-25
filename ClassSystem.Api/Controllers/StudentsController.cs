@@ -2,11 +2,14 @@
 using ClassSystem.Core.Interfaces;
 using ClassSystem.Core.Models;
 using ClassSystem.EF.DTOs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClassSystem.Api.Controllers
 {
+    [Authorize(Roles ="Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController : ControllerBase
@@ -17,12 +20,12 @@ namespace ClassSystem.Api.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             return Ok(await _unitOfWork.Students.GetByIdAsync(id));
         }
+        
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllAsync()
         {
@@ -40,8 +43,53 @@ namespace ClassSystem.Api.Controllers
             _unitOfWork.Complete();
             return Ok(student);
         }
+        [HttpPost("Auth")]
+        public async Task<IActionResult> RegisterAsync([FromBody]RegisterModel model)
+        {
+            if(!ModelState.IsValid) 
+            {
+            return BadRequest(ModelState);
+            }
+            var result = await _unitOfWork.Students.RegisterAsync(model);
+            if (!result.IsAuthenticated)
+            {
+                return BadRequest(result.Massage);
+            }
+            return Ok(result.Token);
+        }
 
-       
+        [HttpPost("Token")]
+        public async Task<IActionResult> GetTokenAsync([FromBody] TokenRequestModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _unitOfWork.Students.GetJwtToken(model);
+            if (!result.IsAuthenticated)
+            {
+                return BadRequest(result.Massage);
+            }
+            return Ok(result);
+        }
+      
+        
+        [HttpPost("AddRole")]
+        public async Task<IActionResult> AddRoleAsync([FromBody] AddToRoleModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _unitOfWork.Students.AddToRoleAsync(model);
+          if (!string.IsNullOrEmpty(result))
+            {
+                return BadRequest(result);
+            }
+          
+            return Ok(model);
+        }
+
 
 
     }
